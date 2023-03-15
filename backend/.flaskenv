@@ -1,5 +1,4 @@
-FLASK_DEBUG=True
-FLASK_APP=app.py
+FLASK_APP= run.py
 FLASK_RUN_HOST=localhost
 FLASK_RUN_PORT=8080
-FLASK_ENV=development
+FLASK_DEBUG=True
