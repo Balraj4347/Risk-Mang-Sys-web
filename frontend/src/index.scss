@@ -1,0 +1,61 @@
+@use "./styles/_variables";
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Montserrat:wght@200;500&family=Rajdhani:wght@500&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif; */
+  font-family: "Rajdhani", "Roboto", "Libre Baskerville", "Montserrat";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.app {
+  width: 100vw;
+  height: 100vh;
+  background: variables.$light-bg;
+  color: variables.$light-text;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.dark-mode-app {
+  background: variables.$dark-bg;
+  background-size: cover;
+  color: variables.$dark-text;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+.mainPage {
+  padding-top: 1px;
+  display: flex;
+  height: 90%;
+  width: 100%;
+}
+.basic {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid;
+}
+.layout-container {
+  padding: 10px;
+  width: 100%;
+  overflow-y: auto;
+}
+.card-container {
+  background: variables.$card-backgroud;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px;
+}

@@ -1,0 +1,45 @@
+@use "./variables";
+.sidebar-dark {
+  // background: variables.$dark-container-bg;
+}
+.sidebar-light {
+  // background: variables.$light-container-bg;
+}
+.sidebarContainer {
+  height: 90vh;
+  border-radius: 2px;
+  width: 18vw;
+  min-width: 180px;
+  ul {
+    list-style: none;
+    .dark {
+      // background-color: variables.$dark-btn-bg;
+      color: variables.$dark-text;
+    }
+    .light {
+      // background-color: variables.$light-btn-bg;
+      color: variables.$light-text;
+    }
+    li {
+      padding: 15px;
+      width: 90%;
+      margin: 10px;
+      border-radius: 20px;
+      &:hover {
+        color: #ffffff;
+      }
+      span {
+        padding: 0px 5px;
+      }
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+@media screen and (max-width: variables.$mid-screen-breakpoint) {
+  .sidebarContainer {
+    display: none;
+  }
+}

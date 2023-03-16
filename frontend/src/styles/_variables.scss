@@ -1,0 +1,30 @@
+$dark-bg: linear-gradient(45deg, #908e8e52 0%, #3736364d 49%, #37363642 49%),
+  url("../assets/dark-bg-pic.png");
+
+$dark-text: #dbdada;
+$dark-btn-bg: rgb(36, 36, 36);
+$dark-container-bg: linear-gradient(
+  45deg,
+  #0c0c0c 0%,
+  #363637 49%,
+  #000000 100%
+);
+$light-btn-bg: #c2c2c2;
+$light-bg: linear-gradient(45deg, #908e8e52 0%, #3736364d 49%, #37363642 49%),
+  url("../assets/light-bg-pic.jpeg");
+
+$light-text: #000000;
+$light-container-bg: #edebeb;
+
+$mui-blue: #1876d2;
+
+$card-backgroud: linear-gradient(
+  41deg,
+  rgb(185 185 185 / 67%) 0%,
+  rgb(144 147 152 / 14%) 48%,
+  rgb(253 253 253 / 36%) 100%
+);
+
+$large-screen-breakpoint: 950px;
+$mid-screen-breakpoint: 650px;
+$small-screen-breakpoint: 400px;
