@@ -1,11 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-frontend/node_modules
+node_modules/
 
 # env variables files
 backend/.env
 backend/.flaskenv
+__pycache__/
 
 /.pnp
 .pnp.js
