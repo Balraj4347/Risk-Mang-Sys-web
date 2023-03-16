@@ -46,7 +46,7 @@ class User:
   def getAuth(self):
     access_token = request.headers.get("AccessToken")
     refresh_token = request.headers.get("RefreshToken")
-
+  
     resp = tools.JsonResp({ "message": "User not logged in" }, 401)
 
     if access_token:

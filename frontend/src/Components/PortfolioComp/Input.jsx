@@ -1,5 +1,5 @@
 import { useState } from "react";
-import hashCode from "../../Utils/hashID";
+import { hashCode } from "../../Utils/tools";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, IconButton } from "@mui/material";
@@ -16,7 +16,8 @@ import axios from "axios";
  * @param {stockDispatchContext} stockDispatch dispatch the add action to update the state of stock list
  */
 const Input = ({ stocks, stockDispatch, theme }) => {
-  const [text, setText] = useState("");
+  const [ticker, setTicker] = useState("");
+  const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [possibleTickers, setPossibleTickers] = useState([]);
@@ -26,8 +27,11 @@ const Input = ({ stocks, stockDispatch, theme }) => {
    */
   const addStock = () => {
     //check if empty input
-    if (text === "" || quantity === 0) return;
-    let StockId = hashCode(text);
+    if (ticker === "" || quantity === 0 || name === "" || price === 0) {
+      enqueueSnackbar("Fill ALL the Fields", { variant: "warning" });
+      return;
+    }
+    let StockId = hashCode(ticker);
     // check if already the stock is in the state
     if (stocks.some((e) => e.id === StockId)) {
       enqueueSnackbar("Stock Already Added to the List", {
@@ -39,19 +43,21 @@ const Input = ({ stocks, stockDispatch, theme }) => {
     stockDispatch({
       type: "added",
       id: StockId,
-      text: text.toUpperCase(),
+      ticker: ticker.toUpperCase(),
+      name: name.toUpperCase(),
       quantity: quantity,
       price: price,
     });
     // re-initialise the input values
-    setText("");
+    setTicker("");
+    setName("");
     setQuantity(0);
     setPrice(0);
     setPossibleTickers([]);
   };
 
-  const textChange = async (e) => {
-    setText(e.target.value);
+  const tickerChange = async (e) => {
+    setTicker(e.target.value);
     if (e.target.value !== "") {
       let tickerResp = await axios.get(
         "https://ticker-2e1ica8b9.now.sh/keyword/" + e.target.value
@@ -81,14 +87,15 @@ const Input = ({ stocks, stockDispatch, theme }) => {
               InputLabelProps={{
                 style: { color: `${theme.dark ? "#ffffff" : "#000000"}` },
               }}
-              value={text}
-              onChange={textChange}
+              value={ticker}
+              onChange={tickerChange}
               onKeyDown={(e) => {
                 if (e.keyCode === 13) addStock();
               }}
             />
           </Box>
           <div
+            id={"auto-suggest-box"}
             className={`${
               possibleTickers.length > 0 && "activeBox"
             } autocomp-box `}
@@ -100,7 +107,8 @@ const Input = ({ stocks, stockDispatch, theme }) => {
                     <li
                       key={idx}
                       onClick={(e) => {
-                        setText(item.symbol);
+                        setTicker(item.symbol);
+                        setName(item.name);
                         setPossibleTickers([]);
                       }}
                     >
@@ -111,6 +119,30 @@ const Input = ({ stocks, stockDispatch, theme }) => {
             </ul>
           </div>
         </div>
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <ShowChartIcon sx={{ color: "red", mr: 0.5, my: 0.5 }} />
+          <TextField
+            autoComplete='off'
+            id='stockName'
+            label='Enter Stock Name'
+            variant='standard'
+            sx={{
+              input: {
+                color: `${theme.dark ? "#ffffff" : "#000000"}`,
+              },
+            }}
+            InputLabelProps={{
+              style: { color: `${theme.dark ? "#ffffff" : "#000000"}` },
+            }}
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addStock();
+            }}
+          />
+        </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <NumbersIcon sx={{ color: "blue", mr: 1, my: 0.5 }} />
           <TextField
@@ -193,7 +225,7 @@ const CsvInputField = ({ theme, stocks, enqueueSnackbar, stockDispatch }) => {
         if (csvOutput.length !== 0) {
           const data = csvOutput.split(",");
 
-          for (let i = 0; i < data.length; i += 2) {
+          for (let i = 0; i < data.length; i += 3) {
             let StockId = hashCode(data[i]);
             // check if already the stock is in the state
             if (stocks.some((e) => e.id === StockId)) {
@@ -205,8 +237,9 @@ const CsvInputField = ({ theme, stocks, enqueueSnackbar, stockDispatch }) => {
             stockDispatch({
               type: "added",
               id: StockId,
-              text: data[i].toUpperCase(),
-              quantity: data[i + 1],
+              ticker: data[i].toUpperCase(),
+              name: data[i + 1].toUpperCase(),
+              quantity: data[i + 2],
             });
           }
         } else {

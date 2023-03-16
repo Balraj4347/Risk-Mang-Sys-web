@@ -6,21 +6,32 @@ import { useContext } from "react";
 import { DashBoard, LoginPage, Portfolio, Charts } from "./views";
 import NotFound from "./Utils/NotFound";
 import ProtectedRoute from "./Utils/ProtectedRoute";
-// import axios from "axios";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   const theme = useContext(MyThemeContext);
+  const authState = useAuth();
+  const isLogged = authState.isLoggedin();
   return (
     <>
       <div className={`app ${theme.dark ? "dark-mode-app" : ""}`}>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<LoginPage />} />
+            <Route path='/login' element={<LoginPage />} />
+
             <Route element={<Layout />}>
+              <Route
+                path='/'
+                element={
+                  <ProtectedRoute isLogged={isLogged}>
+                    <DashBoard />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path='/dashboard'
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute isLogged={isLogged}>
                     <DashBoard />
                   </ProtectedRoute>
                 }
@@ -28,7 +39,7 @@ function App() {
               <Route
                 path='/charts'
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute isLogged={isLogged}>
                     <Charts />
                   </ProtectedRoute>
                 }
@@ -36,12 +47,19 @@ function App() {
               <Route
                 path='/portfolio'
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute isLogged={isLogged}>
                     <Portfolio />
                   </ProtectedRoute>
                 }
               />
-              <Route path='*' element={<NotFound />} />
+              <Route
+                path='*'
+                element={
+                  <ProtectedRoute isLogged={isLogged}>
+                    <NotFound />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -60,16 +60,16 @@ class Portfolio:
         # pprint(payload)
         try:
             portfolio = app.db.portfolios.find_one({"id":req_data['portfolio_id']})
-            if portfolio:
-                initial_Stocks = portfolio['stocks']
-                if len(payload)==0:
-                    initial_Stocks={}
-                else:
-                    initial_Stocks.update(payload)
+            # if portfolio:
+            #     initial_Stocks = portfolio['stocks']
+            #     if len(payload)==0:
+            #         initial_Stocks={}
+            #     else:
+            #         initial_Stocks.update(payload)
                 # pprint(initial_Stocks)
             
-            app.db.portfolios.update_one({"id":req_data["portfolio_id"]},{"$set":{"stocks":initial_Stocks,"stock_count":len(initial_Stocks)}})
-            resp = tools.JsonResp({"msg":"Stock Updated","Stock":initial_Stocks},200)
+            app.db.portfolios.update_one({"id":req_data["portfolio_id"]},{"$set":{"stocks":payload,"stock_count":len(payload)}})
+            resp = tools.JsonResp({"msg":"Stock Updated","Stock":payload},200)
         except Exception as e:
             pprint(e)
             return tools.JsonResp({"message":"An Exception Occured-> {}"},500)

@@ -7,6 +7,7 @@
   .textInp {
     display: flex;
     align-items: flex-end;
+    width: 100%;
     justify-content: space-around;
 
     input {
@@ -64,6 +65,7 @@
 
 .StockList-container {
   padding: 10px;
+  overflow-x: auto;
   h3 {
     font-size: x-large;
   }
@@ -105,6 +107,11 @@
         border: 1px solid;
       }
     }
+  }
+  button {
+    height: 40px;
+    background: variables.$dark-btn-bg;
+    margin-left: 10px;
   }
 }
 

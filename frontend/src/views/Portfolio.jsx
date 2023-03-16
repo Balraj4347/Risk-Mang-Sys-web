@@ -5,13 +5,13 @@ import { useContext } from "react";
 import "../styles/Portfolio.scss";
 const Portfolio = () => {
   const theme = useContext(MyThemeContext);
-  const stocks = useStocks();
+  const { stocks } = useStocks();
   const stockDispatch = useStocksDispatch();
   return (
     <>
       <Input stocks={stocks} stockDispatch={stockDispatch} theme={theme} />
 
-      <ListStocks stocks={stocks} theme={theme} />
+      <ListStocks theme={theme} />
     </>
   );
 };

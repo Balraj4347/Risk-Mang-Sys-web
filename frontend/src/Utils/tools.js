@@ -13,4 +13,16 @@ function hashCode(str) {
   }
   return hash;
 }
-export default hashCode;
+
+function generatePayload(stocks) {
+  let ans = {};
+  Object.values(stocks).forEach((ele) => {
+    ans[ele.ticker] = {
+      name: ele.name,
+      quantity: ele.quantity,
+      price: ele.price,
+    };
+  });
+  return ans;
+}
+export { hashCode, generatePayload };

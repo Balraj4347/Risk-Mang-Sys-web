@@ -13,7 +13,7 @@ def token_required(f):
 		try:
 			data = jwt.decode(access_token, app.config['SECRET_KEY'],algorithms=['HS256'])
 		except Exception as e:
-			return JsonResp({ "message": "Token Vaidation error", "exception": str(e) }, 401)
+			return JsonResp({ "message": "Token Vaidation error", "exception": str(e) }, 403)
 
 		return f(*args, **kwargs)
 

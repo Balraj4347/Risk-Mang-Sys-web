@@ -1,92 +1,94 @@
-import { createContext, useState, useEffect, useCallback } from "react";
-
-let logoutTimer;
-
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 const AuthContext = createContext();
 
-const calculateRemainingTokenTime = (expirationTime) => {
-  const currentTime = new Date().getTime();
-  const futureTime = new Date(expirationTime).getTime();
-
-  const remainingTime = futureTime - currentTime;
-
-  return remainingTime;
-};
-
-const retrieveStoredToken = () => {
-  const storedToken = localStorage.getItem("Accesstoken");
-  const userName = localStorage.getItem("userName");
-  const storedExpirationDate = localStorage.getItem("expirationTime");
-
-  const remainingTime = calculateRemainingTokenTime(storedExpirationDate);
-  if (remainingTime <= 60000) {
-    localStorage.removeItem("Accesstoken");
-    localStorage.removeItem("expirationTime");
-    localStorage.removeItem("userName");
-    return null;
-  }
-
-  return {
-    token: storedToken,
-    duration: remainingTime,
-    userName: userName,
-  };
-};
-export const AuthContextProvider = (props) => {
-  const storedData = retrieveStoredToken();
-
-  let initialToken;
-  let initialUser;
-  if (storedData) {
-    initialToken = storedData.token;
-    initialUser = storedData.userName;
-  }
-
-  const [token, setToken] = useState(initialToken);
-  const [userName, setUserName] = useState(initialUser);
-  const userIsLoggedIn = !!token;
-
-  const logoutHandler = useCallback(() => {
-    setToken(null);
-    localStorage.removeItem("Accesstoken");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("expirationTime");
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-    }
-  }, []);
-  const loingHandler = (token, username) => {
-    setToken(token);
-    setUserName(username);
-    localStorage.setItem("Accesstoken", token);
-    localStorage.setItem("userName", userName);
-    let expirationTime = new Date();
-    expirationTime = expirationTime.setDate(expirationTime.getDate() + 5);
-    localStorage.setItem("expirationTime", expirationTime);
-    const remainingTime = calculateRemainingTokenTime(expirationTime);
-    logoutTimer = setTimeout(logoutHandler, remainingTime);
-  };
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState("");
+  const [token, setToken] = useState(undefined);
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
-    if (storedData) {
-      console.log(storedData.duration);
-      logoutTimer = setTimeout(logoutHandler, storedData.duration);
-    }
-  }, [storedData, logoutHandler]);
+    async function loadStorageData() {
+      const storageUser = localStorage.getItem("user");
+      const storageToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+      if (storageToken && storageUser && refreshToken) {
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              AccessToken: storageToken,
+              RefreshToken: refreshToken,
+            },
+          };
 
-  const contextValue = {
-    token: token,
-    user: userName,
-    isLoggedIn: userIsLoggedIn,
-    logout: logoutHandler,
-    login: loingHandler,
+          const { data } = await axios.get("/api/v1/user/auth", config);
+
+          if (data) {
+            setUser(JSON.parse(storageUser));
+            setToken(storageToken);
+            setIsLogged(true);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        Logout();
+      }
+    }
+    loadStorageData();
+    // eslint-disable-next-line no-use-before-define
+  }, []);
+
+  const Login = async ({ email, password }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const payload = {
+        email: email,
+        password: password,
+      };
+      const { data } = await axios.post("/api/v1/user/login", payload, config);
+      const userData = { username: data.user_name, email: data.email };
+      const accesstoken = data.access_token;
+
+      setUser(userData);
+      setToken(accesstoken);
+      setIsLogged(true);
+
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+      localStorage.setItem("user", JSON.stringify(userData));
+    } catch (err) {
+      if (err.respone.status === 403) {
+        Logout();
+      }
+      return false;
+    }
+    return true;
   };
 
+  const Logout = () => {
+    localStorage.clear();
+    setUser(null);
+    setToken(undefined);
+    setIsLogged(false);
+  };
+  const isLoggedin = () => {
+    return isLogged;
+  };
   return (
-    <AuthContext.Provider value={contextValue}>
-      {props.children}
+    <AuthContext.Provider
+      value={{ token, user, isLogged, isLoggedin, Login, Logout }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContext;
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

@@ -1,4 +1,16 @@
-const ListStocks = ({ stocks, theme }) => {
+import { Button } from "@mui/material";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { useStocks, useStocksDispatch } from "../../context/StockContext";
+import { useSnackbar } from "notistack";
+const ListStocks = ({ theme }) => {
+  const { stocks, updateStocks } = useStocks();
+  const stockDispatch = useStocksDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const UpdateStockDb = () => {
+    updateStocks().then((data) => {
+      enqueueSnackbar(data.msg, { variant: data.variant });
+    });
+  };
   return (
     <div className='card-container StockList-container'>
       <h3>Stock List</h3>
@@ -6,6 +18,7 @@ const ListStocks = ({ stocks, theme }) => {
         <thead className={theme.dark ? "dark-cont" : "light-cont"}>
           <tr>
             <th>Stock Ticker</th>
+            <th>Stock Name</th>
             <th>Stock Quantity</th>
             <th>Stock Price</th>
           </tr>
@@ -14,14 +27,32 @@ const ListStocks = ({ stocks, theme }) => {
           {stocks.map((item) => {
             return (
               <tr key={item.id}>
-                <td> {item.text}</td>
+                <td> {item.ticker}</td>
+                <td>{item.name}</td>
                 <td>{item.quantity}</td>
                 <td>{item.price}</td>
+                <td>
+                  <AiFillCloseCircle
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      stockDispatch({
+                        type: "deleted",
+                        id: item.id,
+                        ticker: item.ticker,
+                      });
+                    }}
+                  />
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <div>
+        <Button variant='contained' onClick={UpdateStockDb} size='small'>
+          Update Portfolio
+        </Button>
+      </div>
     </div>
   );
 };

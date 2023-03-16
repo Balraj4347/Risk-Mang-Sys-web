@@ -1,18 +1,17 @@
 import "../styles/Login.scss";
-import axios from "axios";
+
 import { useSnackbar } from "notistack";
-import { useContext } from "react";
 import landingImage from "../assets/landingImage.jpeg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaUserAlt, FaKey } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import CircularProgress from "@mui/material/CircularProgress";
-import AuthContext from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import isEmail from "validator/lib/isEmail";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const authContext = useContext(AuthContext);
+  const authState = useAuth();
 
   const [loginView, setLoginView] = useState(true);
   const toggleLogin = () => {
@@ -31,9 +30,9 @@ const LoginPage = () => {
       <div className='login-wrapper'>
         <h5>{loginView ? "Login" : "Sign-Up"}</h5>
         {loginView ? (
-          <LoginForm authContext={authContext} />
+          <LoginForm authState={authState} />
         ) : (
-          <RegisterForm authContext={authContext} />
+          <RegisterForm authState={authState} />
         )}
         <div className='switch-btn' onClick={toggleLogin}>
           <p>{loginView ? "Sign-Up" : "Log-In"}</p>
@@ -43,32 +42,25 @@ const LoginPage = () => {
   );
 };
 
-const LoginForm = ({ authContext }) => {
+const LoginForm = ({ authState }) => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+
   const handleLogin = async () => {
+    setIsLoading(true);
     if (!isEmail(userEmail) || !password) {
       enqueueSnackbar("Enter Valid credentials", {
         variant: "error",
       });
+      setIsLoading(false);
       return;
     }
+
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const payload = {
-        email: userEmail,
-        password: password,
-      };
-      const { data } = await axios.post("/api/v1/user/login", payload, config);
-      console.log(data);
-      authContext.login(data.access_token, data.user_name);
-      console.log(authContext);
+      authState.Login({ email: userEmail, password: password });
     } catch (error) {
       let resp = error.response;
       console.log(resp);
@@ -76,7 +68,12 @@ const LoginForm = ({ authContext }) => {
         variant: "error",
       });
     }
+    setIsLoading(false);
   };
+  useEffect(() => {
+    if (authState.isLoggedin()) navigate("/dashboard");
+    // eslint-disable-next-line
+  }, [authState.isLogged]);
   return (
     <div className='input-fields'>
       <span>
@@ -116,7 +113,7 @@ const LoginForm = ({ authContext }) => {
         </label>
       </span>
       <button id='login-sbmt-btn' type='submit' onClick={handleLogin}>
-        {authContext.isloading ? (
+        {isLoading ? (
           <CircularProgress style={{ width: "20px", height: "20px" }} />
         ) : (
           "Log-In"
@@ -125,7 +122,7 @@ const LoginForm = ({ authContext }) => {
     </div>
   );
 };
-const RegisterForm = ({ authContext }) => {
+const RegisterForm = ({ authState }) => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -133,7 +130,12 @@ const RegisterForm = ({ authContext }) => {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
-  const handleRegistration = () => {};
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleRegistration = () => {
+    setIsLoading(true);
+    setIsLoading(false);
+  };
   return (
     <div className='input-fields'>
       <span>
@@ -243,7 +245,7 @@ const RegisterForm = ({ authContext }) => {
         </label>
       </span>
       <button id='register-sbmt-btn' type='submit' onClick={handleRegistration}>
-        {authContext.isloading ? (
+        {isLoading ? (
           <CircularProgress style={{ width: "20px", height: "20px" }} />
         ) : (
           "Sign-Up"
