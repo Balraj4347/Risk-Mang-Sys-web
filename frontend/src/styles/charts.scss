@@ -1,0 +1,23 @@
+.chart-container {
+  height: 60%;
+  overflow-y: auto;
+  .apexcharts-text {
+    fill: white !important;
+  }
+  .apexcharts-tooltip {
+    color: black;
+  }
+  .cards-wrapper {
+  }
+  .card-container {
+    min-width: 500px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .chart-container {
+    .card-container {
+      min-width: 90%;
+    }
+  }
+}

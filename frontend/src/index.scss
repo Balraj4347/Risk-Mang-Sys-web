@@ -58,4 +58,20 @@ img {
   border-radius: 20px;
   padding: 15px;
   margin: 10px;
+  width: calc(100% - 20px);
+  flex: 1;
+}
+
+.container-block {
+  // border: 1px solid;
+  padding: 10px;
+  // display: flex;
+  // flex-direction: column;
+}
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.fake-height {
+  height: 140px;
 }
