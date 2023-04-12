@@ -1,17 +1,62 @@
-import { useStocks, useStocksDispatch } from "../context/StockContext";
+import {
+  usePortfolio,
+  usePortfolioDispatch,
+} from "../context/PortfolioContext";
 import { Input, ListStocks } from "../Components/PortfolioComp";
 import { MyThemeContext } from "../context/MyThemeContext";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import "../styles/Portfolio.scss";
+import ReactApexChart from "react-apexcharts";
+
 const Portfolio = () => {
   const theme = useContext(MyThemeContext);
-  const { stocks } = useStocks();
-  const stockDispatch = useStocksDispatch();
+  const { stocks } = usePortfolio();
+  const stockDispatch = usePortfolioDispatch();
+
+  const getOptions = () => {
+    return {
+      chart: {
+        width: 380,
+        height: 300,
+        type: "pie",
+      },
+      labels: stocks.map((ele) => ele["ticker"]),
+      responsive: [
+        {
+          breakpoint: 500,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "top",
+            },
+          },
+        },
+      ],
+    };
+  };
+  const getSeries = () => {
+    return Object.values(stocks).map((ele) => {
+      return Number(ele.quantity);
+    });
+  };
   return (
     <>
       <Input stocks={stocks} stockDispatch={stockDispatch} theme={theme} />
 
       <ListStocks theme={theme} />
+      {stocks && (
+        <div className='card-container pie-chart-container'>
+          <h3> Portfolio Stocks Proportion</h3>
+          <ReactApexChart
+            id={"portfolio-pie-chart"}
+            options={getOptions()}
+            series={getSeries()}
+            type='pie'
+          />
+        </div>
+      )}
     </>
   );
 };

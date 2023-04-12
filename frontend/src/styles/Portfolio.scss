@@ -114,7 +114,19 @@
     margin-left: 10px;
   }
 }
-
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  h3 {
+    padding: 10px 0px;
+  }
+  #portfolio-pie-chart {
+    align-self: center;
+  }
+  .apexcharts-legend-text {
+    color: white !important;
+  }
+}
 @media screen and (max-width: variables.$mid-screen-breakpoint) {
   .portfolio-input-container {
     .textInp {

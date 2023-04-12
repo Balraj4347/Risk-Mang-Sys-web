@@ -5,8 +5,8 @@ import { hashCode, generatePayload } from "../Utils/tools";
 import { useAuth } from "./AuthContext";
 //Creating the Context to map to the Current Stocks state
 // and to dispatch changes
-const StockContext = createContext(null);
-const StockDispatchContext = createContext(null);
+const PortfolioContext = createContext(null);
+const PortfolioDispatchContext = createContext(null);
 
 async function getPortfolioStocks(token) {
   try {
@@ -33,7 +33,7 @@ async function getPortfolioStocks(token) {
 }
 
 // Wrapper funciton
-export function StockProvider({ children }) {
+export function PortfolioProvider({ children }) {
   const authState = useAuth();
 
   useEffect(() => {
@@ -41,9 +41,9 @@ export function StockProvider({ children }) {
     // eslint-disable-next-line
   }, [authState.token]);
 
-  const [stocks, dispatch] = useReducer(StockReducer, initialStocks);
+  const [stocks, dispatch] = useReducer(PortfolioReducer, initialStocks);
 
-  const updateStocks = async () => {
+  const updatePortfolio = async () => {
     try {
       const config = {
         headers: {
@@ -64,24 +64,24 @@ export function StockProvider({ children }) {
     }
   };
   return (
-    <StockContext.Provider value={{ stocks, updateStocks }}>
-      <StockDispatchContext.Provider value={dispatch}>
+    <PortfolioContext.Provider value={{ stocks, updatePortfolio }}>
+      <PortfolioDispatchContext.Provider value={dispatch}>
         {children}
-      </StockDispatchContext.Provider>
-    </StockContext.Provider>
+      </PortfolioDispatchContext.Provider>
+    </PortfolioContext.Provider>
   );
 }
 
 //Function to import to get the context in a component
-export function useStocks() {
-  return useContext(StockContext);
+export function usePortfolio() {
+  return useContext(PortfolioContext);
 }
-export function useStocksDispatch() {
-  return useContext(StockDispatchContext);
+export function usePortfolioDispatch() {
+  return useContext(PortfolioDispatchContext);
 }
 
 //Reducer Function to update the stocks list depending on the action initiated
-function StockReducer(stocks, action) {
+function PortfolioReducer(stocks, action) {
   switch (action.type) {
     case "added": {
       return [

@@ -4,6 +4,7 @@ from datetime import timedelta
 import time, datetime
 import random
 import uuid
+import yfinance as yf
 
 def nowDatetimeUserTimezone(user_timezone):
 	tzone = timezone(user_timezone)
@@ -52,3 +53,8 @@ def validEmail(email):
 		return True
 	else:
 		return False
+	
+def get_historical_data(tickers,period,interval):
+    data = yf.download(tickers,period=period,interval=interval,group_by='ticker')
+    data.sort_index(ascending=True,inplace=True)
+    return data

@@ -1,10 +1,14 @@
 import { Button } from "@mui/material";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { useStocks, useStocksDispatch } from "../../context/StockContext";
+import {
+  usePortfolio,
+  usePortfolioDispatch,
+} from "../../context/PortfolioContext";
 import { useSnackbar } from "notistack";
+
 const ListStocks = ({ theme }) => {
-  const { stocks, updateStocks } = useStocks();
-  const stockDispatch = useStocksDispatch();
+  const { stocks, updateStocks } = usePortfolio();
+  const stockDispatch = usePortfolioDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const UpdateStockDb = () => {
     updateStocks().then((data) => {

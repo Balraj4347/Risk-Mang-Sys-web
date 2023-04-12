@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Utils/Layout";
 import { MyThemeContext } from "./context/MyThemeContext";
 import { useContext } from "react";
-import { DashBoard, LoginPage, Portfolio, Charts } from "./views";
+import { DashBoard, LoginPage, Portfolio } from "./views";
 import NotFound from "./Utils/NotFound";
 import ProtectedRoute from "./Utils/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
@@ -36,14 +36,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
+              {/* <Route
                 path='/charts'
                 element={
                   <ProtectedRoute isLogged={isLogged}>
                     <Charts />
                   </ProtectedRoute>
                 }
-              />
+              /> */}
               <Route
                 path='/portfolio'
                 element={

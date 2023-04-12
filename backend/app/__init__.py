@@ -6,7 +6,7 @@ from pprintpp import pprint
 # Importing BluePrints
 from app.portfolio.route import portfolio
 from app.user.route import user
-
+from app.analysis.route import analysis
 #Importing Utils 
 from app.utils import JsonResp
 
@@ -32,6 +32,7 @@ def create_app(config_obj=None):
     #blueprint registration
     app.register_blueprint(user,url_prefix="/api/v1/user")
     app.register_blueprint(portfolio,url_prefix="/api/v1/portfolio")
+    app.register_blueprint(analysis,url_prefix="/api/v1/analysis")
 
     @app.route("/")
     def index():

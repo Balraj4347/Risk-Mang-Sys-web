@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.scss";
 import App from "./App";
 import { ThemeProvider } from "./context/MyThemeContext";
-import { StockProvider } from "./context/StockContext";
+import { PortfolioProvider } from "./context/PortfolioContext";
 import { SnackbarProvider } from "notistack";
 import { AuthProvider } from "./context/AuthContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -12,9 +12,9 @@ root.render(
     <SnackbarProvider maxSnack={3} autoHideDuration={1000}>
       <ThemeProvider>
         <AuthProvider>
-          <StockProvider>
+          <PortfolioProvider>
             <App />
-          </StockProvider>
+          </PortfolioProvider>
         </AuthProvider>
       </ThemeProvider>
     </SnackbarProvider>

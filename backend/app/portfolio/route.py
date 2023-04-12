@@ -14,8 +14,5 @@ def get():
 def update_stocks():
     return Portfolio().updateStocks()
 
-@portfolio.route("/dailyreturns",methods=['GET'])
-@token_required
-def daily_returns():
-    return Portfolio().dailyReturns()
+
 
