@@ -40,13 +40,16 @@ const Input = ({ stocks, stockDispatch, theme }) => {
       return;
     }
     //Dispatch action to add the stock to the state
+    console.log(typeof quantity);
+    console.log(typeof price);
+
     stockDispatch({
       type: "added",
       id: StockId,
       ticker: ticker.toUpperCase(),
       name: name.toUpperCase(),
-      quantity: quantity,
-      price: price,
+      quantity: Number(quantity),
+      price: Number(price),
     });
     // re-initialise the input values
     setTicker("");

@@ -1,4 +1,4 @@
-const getOptions = (Data, yaxisTitle, xaxisTitle) => {
+const getAreaOptions = (Data, yaxisTitle, xaxisTitle, Plottitle) => {
   return {
     chart: {
       type: "area",
@@ -31,7 +31,7 @@ const getOptions = (Data, yaxisTitle, xaxisTitle) => {
       size: 0,
     },
     title: {
-      text: `Adj Close Prices For the Stocks in Portfolio`,
+      text: Plottitle,
       align: "center",
       style: {
         fontSize: "14px",
@@ -83,4 +83,4 @@ const getOptions = (Data, yaxisTitle, xaxisTitle) => {
   };
 };
 
-export default getOptions;
+export { getAreaOptions };

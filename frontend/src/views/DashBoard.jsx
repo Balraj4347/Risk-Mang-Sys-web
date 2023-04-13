@@ -1,35 +1,173 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../styles/charts.scss";
-import { AdjClosePrice, DailyReturns } from "../Components/Dashboard/Charts";
-
+import Plot from "react-plotly.js";
+import LineChart from "../Components/Dashboard/Charts/LineChart";
+import { useAuth } from "../context/AuthContext";
+import ReactApexChart from "react-apexcharts";
 const DashBoard = () => {
+  const authState = useAuth();
+  const [analysis, setAnalysis] = useState(undefined);
+  const [returnMetrics, setReturnMetrics] = useState(undefined);
+  const [returnData, setReturnData] = useState(undefined);
+  const [adjCloseData, setAdjCloseData] = useState(undefined);
+  const [cummulativeReturnData, setCummulativeReturnData] = useState(undefined);
+  const [plot, setPlot] = useState(0);
+  useEffect(() => {
+    get_analysis_resp();
+    //eslint-disable-next-line
+  }, []);
+
+  const get_analysis_resp = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: authState.token,
+      },
+    };
+    try {
+      let resp = await axios.get("/api/v1/analysis/result", config);
+      // console.log(resp.data.analysis["Current Holding"]);
+      setAnalysis(resp.data.analysis);
+      setAdjCloseData(resp.data.adj_close_data);
+      setCummulativeReturnData(resp.data.cummulative_return_data);
+      setReturnData(resp.data.returns_data);
+      setReturnMetrics(resp.data.return_metric);
+      setPlot(resp.data.hist_json);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className='container-block '>
-      <div className='cards-wrapper'>
-        <div className='card-container fake-height'> container-1</div>
-        <div className='card-container fake-height'> container-2</div>
-        <div className='card-container fake-height'> container-3</div>
-      </div>
-      <div className='cards-wrapper'>
-        <div className='card-container fake-height'> container-1</div>
-        <div className='card-container fake-height'> container-2</div>
-      </div>
-      <div className='cards-wrapper'>
-        <div className='card-container fake-height'> container-1</div>
-        <div className='card-container fake-height'> container-2</div>
-        <div className='card-container fake-height'> container-3</div>
-        <div className='card-container fake-height'> container-4</div>
-        <div className='card-container fake-height'> container-5</div>
-        <div className='card-container fake-height'> container-6</div>
-      </div>
-      <div className='chart-container container-block '>
-        <div className='charts-wrapper'>
-          <AdjClosePrice />
-          <DailyReturns />
+    <>
+      {analysis ? (
+        <div className='container-block '>
+          <div className='cards-wrapper'>
+            {Object.entries(analysis).map((ele, i) => {
+              if (ele[0] === "Current Holding") return <></>;
+
+              return (
+                <div className='card-container' key={i}>
+                  <h2>{ele[0]}</h2>
+                  <h3>{ele[1].toFixed(4)}</h3>
+                </div>
+              );
+            })}
+          </div>
+          <div className='cards-wrapper'>
+            <div className='card-container pie-chart-container'>
+              <h2> Current Holdings Distribution</h2>
+              <ReactApexChart
+                id={"portfolio-pie-chart"}
+                options={gePieOptions(analysis["Current Holding"])}
+                series={getSeries(analysis["Current Holding"])}
+                type='pie'
+              />
+            </div>
+          </div>
+          <div className='cards-wrapper'>
+            {Object.entries(returnMetrics).map((ele, key) => {
+              return (
+                <div
+                  className='card-container'
+                  style={{ minWidth: "250px" }}
+                  key={key}
+                >
+                  <h2>{ele[0]}</h2>
+                  {Object.entries(ele[1]).map((el, k) => {
+                    return (
+                      <h4>
+                        {el[0]}
+                        {" :  "} &emsp;
+                        {el[1]}
+                      </h4>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+          <div className='chart-container container-block '>
+            <div className='charts-wrapper'>
+              {adjCloseData && (
+                <>
+                  <h2>Adj Close Prices</h2>
+                  <LineChart
+                    data={adjCloseData}
+                    xtitle={"Time"}
+                    ytitle={"<-----Adj Close Price--->"}
+                    plotTitle={"Adj Close Prices of the stocks"}
+                  />
+                </>
+              )}
+              {returnData && (
+                <>
+                  <h2>Returns</h2>
+                  <LineChart
+                    data={returnData}
+                    xtitle={"Time"}
+                    ytitle={"<-----Returns--->"}
+                    plotTitle={"Returns of the stocks"}
+                  />
+                </>
+              )}
+              <h2>Distribution of Returns of the stocks</h2>
+              <div className='card-container chart-container'>
+                <Plot
+                  data={plot.data}
+                  layout={plot.layout}
+                  useResizeHandler
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+
+              {cummulativeReturnData && (
+                <>
+                  <h2>Cummulative Returns</h2>
+                  <LineChart
+                    data={cummulativeReturnData}
+                    xtitle={"Time"}
+                    ytitle={"<-----Cummulative Return--->"}
+                    plotTitle={"Cummulative Returns of the stocks"}
+                  />
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div>Loading....</div>
+      )}
+    </>
   );
+};
+
+const gePieOptions = (data) => {
+  return {
+    chart: {
+      width: 380,
+      height: 300,
+      type: "pie",
+    },
+    labels: Object.keys(data),
+    responsive: [
+      {
+        breakpoint: 500,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "top",
+          },
+        },
+      },
+    ],
+  };
+};
+
+const getSeries = (data) => {
+  return Object.values(data);
 };
 
 export default DashBoard;

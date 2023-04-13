@@ -6,6 +6,7 @@ import { Input, ListStocks } from "../Components/PortfolioComp";
 import { MyThemeContext } from "../context/MyThemeContext";
 import React, { useContext } from "react";
 import "../styles/Portfolio.scss";
+import "../styles/charts.scss";
 import ReactApexChart from "react-apexcharts";
 
 const Portfolio = () => {
@@ -36,9 +37,10 @@ const Portfolio = () => {
       ],
     };
   };
+
   const getSeries = () => {
     return Object.values(stocks).map((ele) => {
-      return Number(ele.quantity);
+      return Number(ele.quantity * ele.price);
     });
   };
   return (

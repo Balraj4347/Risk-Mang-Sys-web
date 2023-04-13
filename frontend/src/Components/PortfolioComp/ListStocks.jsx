@@ -7,11 +7,11 @@ import {
 import { useSnackbar } from "notistack";
 
 const ListStocks = ({ theme }) => {
-  const { stocks, updateStocks } = usePortfolio();
+  const { stocks, updatePortfolio } = usePortfolio();
   const stockDispatch = usePortfolioDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const UpdateStockDb = () => {
-    updateStocks().then((data) => {
+    updatePortfolio().then((data) => {
       enqueueSnackbar(data.msg, { variant: data.variant });
     });
   };

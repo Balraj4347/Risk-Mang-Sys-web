@@ -1,4 +1,5 @@
 .chart-container {
+  overflow-x: auto;
   .apexcharts-text {
     fill: white !important;
   }
@@ -9,6 +10,20 @@
   }
   .card-container {
     min-width: 500px;
+  }
+}
+
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  h3 {
+    padding: 10px 0px;
+  }
+  #portfolio-pie-chart {
+    align-self: center;
+  }
+  .apexcharts-legend-text {
+    color: white !important;
   }
 }
 

@@ -3,10 +3,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Utils/Layout";
 import { MyThemeContext } from "./context/MyThemeContext";
 import { useContext } from "react";
-import { DashBoard, LoginPage, Portfolio } from "./views";
+import {
+  DashBoard,
+  LoginPage,
+  Portfolio,
+  SnpCompare,
+  Diversification,
+} from "./views";
 import NotFound from "./Utils/NotFound";
 import ProtectedRoute from "./Utils/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
+import { RiskAnalysis } from "./views/RiskAnalysis";
+import SentimentView from "./views/SentimentView";
 
 function App() {
   const theme = useContext(MyThemeContext);
@@ -36,19 +44,43 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path='/charts'
+              <Route
+                path='/snp500'
                 element={
                   <ProtectedRoute isLogged={isLogged}>
-                    <Charts />
+                    <SnpCompare />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
               <Route
                 path='/portfolio'
                 element={
                   <ProtectedRoute isLogged={isLogged}>
                     <Portfolio />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/diversification'
+                element={
+                  <ProtectedRoute isLogged={isLogged}>
+                    <Diversification />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/risk'
+                element={
+                  <ProtectedRoute isLogged={isLogged}>
+                    <RiskAnalysis />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/sentiment'
+                element={
+                  <ProtectedRoute isLogged={isLogged}>
+                    <SentimentView />
                   </ProtectedRoute>
                 }
               />

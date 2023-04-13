@@ -12,6 +12,11 @@ export const SideBarItems = [
     icon: <Faicons.FaListUl />,
   },
   {
+    title: "Compare SnP500",
+    path: "/snp500",
+    icon: <Faicons.FaListUl />,
+  },
+  {
     title: "Risk Assesment",
     path: "/risk",
     icon: <Faicons.FaListUl />,
@@ -22,8 +27,8 @@ export const SideBarItems = [
     icon: <Faicons.FaListUl />,
   },
   {
-    title: "Charts",
-    path: "/charts",
+    title: "Diversification",
+    path: "/diversification",
     icon: <Faicons.FaListUl />,
   },
 ];
