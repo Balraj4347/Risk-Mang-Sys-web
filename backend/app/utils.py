@@ -58,3 +58,9 @@ def get_historical_data(tickers,period,interval):
     data = yf.download(tickers,period=period,interval=interval,group_by='ticker')
     data.sort_index(ascending=True,inplace=True)
     return data
+
+def dict_values_to_float(data:dict):
+	for k,v in data.items():
+		data[k]= float(v)
+		data[k] = round(data[k],5)
+	return data
