@@ -5,6 +5,7 @@ import Plot from "react-plotly.js";
 import LineChart from "../Components/Dashboard/Charts/LineChart";
 import { useAuth } from "../context/AuthContext";
 import ReactApexChart from "react-apexcharts";
+
 const DashBoard = () => {
   const authState = useAuth();
   const [analysis, setAnalysis] = useState(undefined);
@@ -49,7 +50,7 @@ const DashBoard = () => {
               return (
                 <div className='card-container' key={i}>
                   <h2>{ele[0]}</h2>
-                  <h3>{ele[1].toFixed(4)}</h3>
+                  <h4 style={{ fontSize: "2em" }}>$ {ele[1].toFixed(4)}</h4>
                 </div>
               );
             })}
@@ -59,29 +60,23 @@ const DashBoard = () => {
               <h2> Current Holdings Distribution</h2>
               <ReactApexChart
                 id={"portfolio-pie-chart"}
-                options={gePieOptions(analysis["Current Holding"])}
+                options={getPieOptions(analysis["Current Holding"])}
                 series={getSeries(analysis["Current Holding"])}
                 type='pie'
               />
             </div>
           </div>
           <div className='cards-wrapper'>
-            {Object.entries(returnMetrics).map((ele, key) => {
+            {Object.entries(returnMetrics).map((ele, k) => {
               return (
                 <div
                   className='card-container'
                   style={{ minWidth: "250px" }}
-                  key={key}
+                  key={k}
                 >
                   <h2>{ele[0]}</h2>
                   {Object.entries(ele[1]).map((el, k) => {
-                    return (
-                      <h4>
-                        {el[0]}
-                        {" :  "} &emsp;
-                        {el[1]}
-                      </h4>
-                    );
+                    return <ListHtml ele={el} k={k} />;
                   })}
                 </div>
               );
@@ -142,7 +137,7 @@ const DashBoard = () => {
   );
 };
 
-const gePieOptions = (data) => {
+const getPieOptions = (data) => {
   return {
     chart: {
       width: 380,
@@ -164,6 +159,23 @@ const gePieOptions = (data) => {
       },
     ],
   };
+};
+const ListHtml = ({ ele, k }) => {
+  return (
+    <>
+      <h4 key={k}>
+        <span
+          style={{
+            textTransform: "uppercase",
+          }}
+        >
+          {ele[0]}
+        </span>
+        &emsp;{":"} &emsp;
+        {ele[1]}
+      </h4>
+    </>
+  );
 };
 
 const getSeries = (data) => {

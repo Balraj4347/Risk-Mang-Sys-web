@@ -50,7 +50,7 @@ const Portfolio = () => {
       <ListStocks theme={theme} />
       {stocks && (
         <div className='card-container pie-chart-container'>
-          <h3> Portfolio Stocks Proportion</h3>
+          <h3> Portfolio Stocks Composition (Invested Amount)</h3>
           <ReactApexChart
             id={"portfolio-pie-chart"}
             options={getOptions()}

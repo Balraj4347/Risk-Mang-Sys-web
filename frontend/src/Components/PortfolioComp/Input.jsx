@@ -73,6 +73,9 @@ const Input = ({ stocks, stockDispatch, theme }) => {
 
   return (
     <div className='card-container portfolio-input-container'>
+      <h2 style={{ alignSelf: "start", width: "100%" }}>
+        Add Stocks to Portfolio
+      </h2>
       <div className=' textInp '>
         <div>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>

@@ -59,8 +59,16 @@ img {
   padding: 15px;
   margin: 10px;
   width: calc(100% - 20px);
-
+  // width: fit-content;
   flex: 1;
+  h2,
+  h3 {
+    font-size: 1.6em;
+    font-weight: bold;
+    font-family: monospace;
+    border-bottom: 2.5px solid #00f6ff;
+    margin-bottom: 0.4em;
+  }
 }
 
 .container-block {

@@ -25,7 +25,7 @@ const SnpCompare = () => {
     };
     try {
       let resp = await axios.get("/api/v1/analysis/snp500", config);
-      console.log(resp.data);
+      // console.log(resp.data);
       setcombReturnData(resp.data.combinedDf);
       setCummReturnData(resp.data.cummReturn);
       setReturnMetrics(resp.data.ReturnMetrics);
