@@ -3,12 +3,7 @@ from flask import  request
 #importing neccessary library
 # from passlib.hash import pbkdf2_sha256
 import jwt
-
 from yahooquery import Ticker
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 #importing utils and auth tools
 import app.utils as tools
@@ -19,13 +14,9 @@ import numpy as np
 #importing dev related lib
 from pprint import pprint
 
-
+#Plotly for plotting data and sending json
 import plotly
 import plotly.express as px
-
-
-from io import BytesIO
-import base64
 
 class Analysis:
 
@@ -188,7 +179,10 @@ class Analysis:
         fig.update_layout(
             title="Distribution Of Returns of stocks",
             xaxis_title="Returns",
-            yaxis_title="Frequency"
+            yaxis_title="Frequency",
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor= 'rgba(0,0,0,0)',
+            font_color="white",
         )
         # fig.show()
         graphJSON = plotly.io.to_json(fig, pretty=True)
@@ -255,7 +249,14 @@ class SnPCompare:
         fig.update_layout(
             title="Distribution Of Returns of Portfolio and Snp500",
             xaxis_title="Returns",
-            yaxis_title="Frequency"
+            yaxis_title="Frequency",
+            hoverlabel=dict(
+            bgcolor='grey'
+            ),
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor= 'rgba(0,0,0,0)',
+            font_color="white",
+            hovermode='x unified',
         )
         # fig.show()
         graphJSON = plotly.io.to_json(fig, pretty=True)
