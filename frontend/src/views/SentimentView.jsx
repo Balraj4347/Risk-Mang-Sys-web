@@ -49,6 +49,7 @@ const SentimentView = () => {
               href='https://finviz.com/'
               target='_blank'
               rel='noopener noreferrer'
+              id='news-wesite-link'
             >
               Webiste used: FinViz
             </a>
