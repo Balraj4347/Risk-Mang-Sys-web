@@ -72,6 +72,17 @@ export const RiskAnalysis = () => {
               </div>
               <div className='card-container'>
                 <h2>Sharpe Ratio of Portfolio and Market</h2>
+                <ul style={{ margin: "0px 0px 10px 10px" }}>
+                  <li>
+                    The Sharpe ratio compares the return of an investment with
+                    its risk
+                  </li>
+                  <li>
+                    A Sharpe ratio of 2.0 is considered very good. A Sharpe
+                    ratio of 1.0 is considered acceptable. A Sharpe ratio of
+                    less than 1.0 is considered to be poor.
+                  </li>
+                </ul>
                 {Object.entries(sharpeData).map((ele, key) => {
                   return <ListHtml ele={ele} k={key} />;
                 })}

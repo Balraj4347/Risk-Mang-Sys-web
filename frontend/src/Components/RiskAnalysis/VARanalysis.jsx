@@ -99,7 +99,6 @@ const VARanalysis = ({ authState }) => {
               return (
                 <>
                   <h4 style={{ fontSize: "20px" }}>{ele[0]}</h4>
-
                   <h4>
                     {`STARTING PRICE : ${ele[1][0].toFixed(5)}`}&emsp;
                     {`MEAN PRICE : ${ele[1][1].toFixed(5)}`}&emsp;

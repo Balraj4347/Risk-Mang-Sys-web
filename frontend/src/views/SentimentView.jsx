@@ -58,10 +58,13 @@ const SentimentView = () => {
               heading={"Portfolio Sentiment Composition"}
             />
             <div className='cards-wrapper'>
-              <div className='card-container' style={{ columnCount: "4" }}>
+              <div
+                className='card-container'
+                style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+              >
                 {Object.entries(companySentiData).map((ele, k) => {
                   return (
-                    <>
+                    <div>
                       <h2 style={{ fontSize: "15px" }}>
                         Sentiment Composition {ele[0]}{" "}
                       </h2>
@@ -74,7 +77,7 @@ const SentimentView = () => {
                           </h4>
                         );
                       })}
-                    </>
+                    </div>
                   );
                 })}
               </div>

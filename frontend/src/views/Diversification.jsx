@@ -98,6 +98,18 @@ const Diversification = () => {
                 "Correlation b/w Returns and Volatility for simulated weights"
               }
             />
+            <h2>{"Betas Value for Stocks in Portfolio"}</h2>
+            <ul>
+              <li>
+                Beta is a concept that measures the expected move in a stock
+                relative to movements in the overall market.{" "}
+              </li>
+              <li>
+                A beta greater than 1.0 suggests that the stock is more volatile
+                than the broader market, and a beta less than 1.0 indicates a
+                stock with lower volatility.
+              </li>
+            </ul>
             <div className='cards-wrapper'>
               {Object.entries(betasMetricData).map((el, k) => {
                 return (
@@ -110,10 +122,15 @@ const Diversification = () => {
                 );
               })}
             </div>
-            <PlotlyPlot
-              Data={betasHistPlot}
-              heading={"Betas Value for Stocks in Portfolio"}
-            />
+
+            <div className='card-container'>
+              <Plot
+                data={betasHistPlot.data}
+                layout={betasHistPlot.layout}
+                useResizeHandler
+                style={{ width: "100%", height: "100%" }}
+              />
+            </div>
           </div>
         </>
       ) : (
