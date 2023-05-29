@@ -399,7 +399,9 @@ class ValueAtRisk :
         
         fig.add_shape(
             go.layout.Shape(type='line', xref='x', yref='y domain',
-                            x0=q, y0=0, x1=q, y1=0.9),row=rowN, col=1)
+                            x0=q, y0=0, x1=q, y1=0.9,line=dict(
+                                                        color='red',
+                                                        width=3)),row=rowN, col=1)
 
 
         fig.update_xaxes(title="Prices simlated by MonteCarlo Var",row=rowN,col=1)

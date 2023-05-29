@@ -63,6 +63,7 @@ const DashBoard = () => {
                 options={getPieOptions(analysis["Current Holding"])}
                 series={getSeries(analysis["Current Holding"])}
                 type='pie'
+                height='100%'
               />
             </div>
           </div>
@@ -140,8 +141,6 @@ const DashBoard = () => {
 const getPieOptions = (data) => {
   return {
     chart: {
-      width: 380,
-      height: 300,
       type: "pie",
     },
     labels: Object.keys(data),

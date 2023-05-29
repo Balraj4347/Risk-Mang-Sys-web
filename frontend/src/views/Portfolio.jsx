@@ -17,8 +17,8 @@ const Portfolio = () => {
   const getOptions = () => {
     return {
       chart: {
-        width: 380,
-        height: 300,
+        width: 480,
+        height: 500,
         type: "pie",
       },
       labels: stocks.map((ele) => ele["ticker"]),
